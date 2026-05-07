@@ -150,7 +150,7 @@ export default function SubscriptionModal({ open, editing, onClose, onSubmit }: 
                   type="button"
                   onClick={() => set('category', key)}
                   className={`flex flex-col items-center gap-1 p-2.5 rounded-xl text-xs transition-all ${form.category === key ? 'ring-2' : 'bg-gray-800 hover:bg-gray-700'}`}
-                  style={form.category === key ? { background: cat.color + '22', ringColor: cat.color, color: cat.color, outline: `2px solid ${cat.color}` } : { color: '#9ca3af' }}
+                  style={form.category === key ? { background: cat.color + '22', color: cat.color, outline: `2px solid ${cat.color}` } : { color: '#9ca3af' }}
                 >
                   <span className="text-base">{cat.icon}</span>
                   {cat.label}
