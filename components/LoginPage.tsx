@@ -2,10 +2,31 @@
 
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { TrendingDown, Mail, Lock, Chrome } from 'lucide-react'
+import { TrendingDown, Mail, Lock, Chrome, AlertCircle } from 'lucide-react'
 
-export default function LoginPage() {
+// env vars が未設定の場合に表示するエラー画面
+function ConfigError() {
+  return (
+    <div className="min-h-screen bg-gray-950 flex items-center justify-center p-4">
+      <div className="bg-gray-900 border border-red-800/50 rounded-2xl p-8 text-center max-w-md">
+        <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-red-500/10 mb-4">
+          <AlertCircle className="w-6 h-6 text-red-400" />
+        </div>
+        <p className="text-red-400 font-semibold">Supabase 環境変数が未設定です</p>
+        <p className="text-gray-400 text-sm mt-2">Vercel Dashboard の Environment Variables に以下を設定してください。</p>
+        <div className="mt-4 bg-gray-800 rounded-xl p-3 text-left space-y-1">
+          <code className="text-xs text-gray-400 block">NEXT_PUBLIC_SUPABASE_URL</code>
+          <code className="text-xs text-gray-400 block">NEXT_PUBLIC_SUPABASE_ANON_KEY</code>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// env vars チェック済みの場合のみ createClient() を呼ぶ
+function LoginForm() {
   const supabase = createClient()
+
   const [email, setEmail]       = useState('')
   const [password, setPassword] = useState('')
   const [isSignUp, setIsSignUp] = useState(false)
@@ -131,4 +152,12 @@ export default function LoginPage() {
       </div>
     </div>
   )
+}
+
+export default function LoginPage() {
+  const configured = !!(
+    process.env.NEXT_PUBLIC_SUPABASE_URL &&
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  )
+  return configured ? <LoginForm /> : <ConfigError />
 }
