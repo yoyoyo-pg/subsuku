@@ -32,6 +32,16 @@ Supabase の画面には入力例が書かれていないため、アプリ名�
 
 **→ Supabase の Google OAuth 設定は必ず Google Cloud Console の作業が先。**
 
+### Vercel ビルドで「URL and API key are required」が出たら force-dynamic
+
+`NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` が Vercel に未設定の状態でビルドすると、
+Next.js がページをプリレンダリングする際に Supabase クライアントの初期化が走りクラッシュする。
+
+対処: 認証ページとデータ取得ページに `export const dynamic = 'force-dynamic'` を追加してプリレンダリングを無効化。
+環境変数は Vercel Dashboard の Environment Variables に必ず設定すること。
+
+**→ Supabase を使うページは `force-dynamic` 必須。Vercel の環境変数設定はデプロイ前に完了させる。**
+
 ### autoprefixer は package.json に明示的に追加する
 
 Next.js + Tailwind CSS の構成では `autoprefixer` が必要だが、`tailwindcss` の依存として暗黙的にインストールされるため `package.json` に書き忘れやすい。
