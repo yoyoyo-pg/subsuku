@@ -19,6 +19,26 @@ Recharts は SSR 非対応のため、`SpendingCharts.tsx` に `'use client'` �
 `dynamic(() => import(...), { ssr: false })` も使えるが、`'use client'` の方がシンプル。
 **→ チャート系ライブラリは必ず SSR 対応状況を確認してから採用する。**
 
+### Google OAuth は Supabase より先に Google Cloud Console で設定が必要
+
+Supabase の **Authentication → Providers → Google** に入力する Client ID は
+`xxxxx.apps.googleusercontent.com` 形式の値（Google Cloud Console で発行したもの）。
+Supabase の画面には入力例が書かれていないため、アプリ名などを誤って入力しがち。
+
+手順:
+1. Google Cloud Console → OAuth同意画面 → 認証情報 → OAuth クライアント ID（ウェブアプリ）を作成
+2. 承認済みリダイレクト URI に `https://<ref>.supabase.co/auth/v1/callback` を登録
+3. 発行された Client ID / Secret を Supabase に貼り付ける
+
+**→ Supabase の Google OAuth 設定は必ず Google Cloud Console の作業が先。**
+
+### autoprefixer は package.json に明示的に追加する
+
+Next.js + Tailwind CSS の構成では `autoprefixer` が必要だが、`tailwindcss` の依存として暗黙的にインストールされるため `package.json` に書き忘れやすい。
+`npm ci`（クリーンインストール）時に `Cannot find module 'autoprefixer'` で落ちる。
+
+**→ `devDependencies` に `"autoprefixer": "^10"` を必ず明示する。**
+
 ### DashboardClient のデータ更新戦略
 
 Server Component で初期データを fetch し、Client Component に props で渡している。

@@ -35,10 +35,44 @@ npm install
 
 1. [supabase.com](https://supabase.com) でプロジェクトを作成
 2. **SQL Editor** で [`supabase/schema.sql`](./supabase/schema.sql) を実行
-3. **Authentication > Providers > Google** を有効化し、OAuth クライアントを設定
-4. **Authentication > URL Configuration** のリダイレクト先に以下を追加
+3. **Authentication > URL Configuration** のリダイレクト先に以下を追加
    - `http://localhost:3000/auth/callback`
    - `https://<your-app>.vercel.app/auth/callback`
+4. Google ログインを使う場合は [Google OAuth の設定](#google-oauth-の設定) を先に行う
+
+### Google OAuth の設定
+
+> メール/パスワード認証だけ使う場合はスキップ可（Supabase でデフォルト有効）
+
+**① Google Cloud Console でプロジェクトを作成**
+
+[console.cloud.google.com](https://console.cloud.google.com/) を開き、新規プロジェクトを作成。
+
+**② OAuth 同意画面を設定**
+
+1. 左メニュー **「APIとサービス」→「OAuth同意画面」**
+2. User Type: **外部** → 作成
+3. アプリ名（例: `Subsuku`）とサポートメールを入力 → 保存して次へ
+4. スコープ・テストユーザーはそのまま次へ → 完了
+
+**③ OAuth クライアント ID を発行**
+
+1. 左メニュー **「認証情報」→「認証情報を作成」→「OAuth クライアント ID」**
+2. アプリケーションの種類: **ウェブアプリケーション**
+3. 承認済みリダイレクト URI に以下を追加
+
+   ```
+   https://<your-project-ref>.supabase.co/auth/v1/callback
+   ```
+
+   ※ `<your-project-ref>` は Supabase **Project Settings → General** の Project URL から確認
+
+4. 作成 → **クライアント ID**（`xxxxx.apps.googleusercontent.com`）と **クライアントシークレット** をコピー
+
+**④ Supabase に登録**
+
+Supabase Dashboard **Authentication → Providers → Google** を開き、
+コピーした **Client ID** と **Client Secret** を貼り付けて保存。
 
 ### 3. 環境変数の設定
 
