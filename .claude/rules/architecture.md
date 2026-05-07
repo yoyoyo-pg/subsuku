@@ -49,3 +49,4 @@ Row Level Security: 全操作で `auth.uid() = user_id` を強制。
 - `toMonthlyAmount` は `types/subscription.ts` にのみ定義する（重複実装禁止）
 - 新しいカテゴリ・billing_cycle を追加するときは `supabase/schema.sql` の CHECK 制約も同時に更新する
 - `recharts` は SSR 非対応のため `SpendingCharts.tsx` に `'use client'` 必須
+- `app/page.tsx` と `app/dashboard/page.tsx` には `export const dynamic = 'force-dynamic'` が必須（ビルド時プリレンダリングを防ぐため。Supabase の URL/Key がビルド環境に存在しない場合クラッシュする）
