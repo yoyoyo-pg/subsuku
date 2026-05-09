@@ -148,6 +148,15 @@ function LoginForm() {
               {isSignUp ? 'ログイン' : '新規登録'}
             </button>
           </p>
+
+          <div className="mt-4 pt-4 border-t border-gray-800 text-center">
+            <a
+              href="/trial"
+              className="text-gray-500 hover:text-gray-300 text-sm transition-colors"
+            >
+              登録なしでお試し →
+            </a>
+          </div>
         </div>
       </div>
     </div>
