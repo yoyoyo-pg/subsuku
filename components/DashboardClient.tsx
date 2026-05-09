@@ -62,7 +62,7 @@ export default function DashboardClient({ user, initialSubscriptions }: Props) {
     if (editing) {
       const { data: updated, error } = await supabase
         .from('subscriptions')
-        .update({ ...payload, updated_at: new Date().toISOString() })
+        .update(payload)
         .eq('id', editing.id)
         .select()
         .single()
