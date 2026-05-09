@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useCallback } from 'react'
-import { Plus, LogOut, TrendingDown, Search } from 'lucide-react'
+import { useState, useCallback, useMemo } from 'react'
+import { Plus, LogOut, TrendingDown, Search, ArrowUpDown } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import StatsCards       from './StatsCards'
@@ -10,6 +10,17 @@ import WasteAlert       from './WasteAlert'
 import SubscriptionCard from './SubscriptionCard'
 import SubscriptionModal from './SubscriptionModal'
 import type { Subscription, SubscriptionFormData } from '@/types/subscription'
+import { toMonthlyAmount } from '@/types/subscription'
+
+type SortKey = 'created_at' | 'name' | 'amount_desc' | 'amount_asc' | 'next_billing_date'
+
+const SORT_LABELS: Record<SortKey, string> = {
+  created_at:        '追加順',
+  name:              '名前順',
+  amount_desc:       '金額（高い順）',
+  amount_asc:        '金額（低い順）',
+  next_billing_date: '請求日順',
+}
 
 interface Props {
   user: { id: string; email: string }
@@ -25,6 +36,7 @@ export default function DashboardClient({ user, initialSubscriptions }: Props) {
   const [editing, setEditing]             = useState<Subscription | null>(null)
   const [search, setSearch]               = useState('')
   const [filterActive, setFilterActive]   = useState<'all' | 'active' | 'inactive'>('active')
+  const [sortKey, setSortKey]             = useState<SortKey>('created_at')
 
   async function handleLogout() {
     await supabase.auth.signOut()
@@ -83,14 +95,37 @@ export default function DashboardClient({ user, initialSubscriptions }: Props) {
     setModalOpen(true)
   }
 
-  const filtered = subscriptions.filter(s => {
-    const matchSearch = !search || s.name.toLowerCase().includes(search.toLowerCase())
-    const matchActive =
-      filterActive === 'all'      ? true :
-      filterActive === 'active'   ? s.is_active :
-      !s.is_active
-    return matchSearch && matchActive
-  })
+  const filtered = useMemo(() => {
+    const result = subscriptions.filter(s => {
+      const matchSearch = !search || s.name.toLowerCase().includes(search.toLowerCase())
+      const matchActive =
+        filterActive === 'all'    ? true :
+        filterActive === 'active' ? s.is_active :
+        !s.is_active
+      return matchSearch && matchActive
+    })
+
+    result.sort((a, b) => {
+      switch (sortKey) {
+        case 'name':
+          return a.name.localeCompare(b.name, 'ja')
+        case 'amount_desc':
+          return toMonthlyAmount(b.amount, b.billing_cycle) - toMonthlyAmount(a.amount, a.billing_cycle)
+        case 'amount_asc':
+          return toMonthlyAmount(a.amount, a.billing_cycle) - toMonthlyAmount(b.amount, b.billing_cycle)
+        case 'next_billing_date': {
+          if (!a.next_billing_date && !b.next_billing_date) return 0
+          if (!a.next_billing_date) return 1
+          if (!b.next_billing_date) return -1
+          return a.next_billing_date.localeCompare(b.next_billing_date)
+        }
+        default: // created_at
+          return b.created_at.localeCompare(a.created_at)
+      }
+    })
+
+    return result
+  }, [subscriptions, search, filterActive, sortKey])
 
   return (
     <div className="min-h-screen bg-gray-950">
@@ -143,6 +178,20 @@ export default function DashboardClient({ user, initialSubscriptions }: Props) {
                 placeholder="検索..."
                 className="w-full bg-gray-900 border border-gray-800 rounded-xl pl-9 pr-4 py-2 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-violet-500 transition-colors"
               />
+            </div>
+
+            {/* Sort */}
+            <div className="relative flex items-center">
+              <ArrowUpDown className="absolute left-3 w-3.5 h-3.5 text-gray-500 pointer-events-none" />
+              <select
+                value={sortKey}
+                onChange={e => setSortKey(e.target.value as SortKey)}
+                className="bg-gray-900 border border-gray-800 rounded-xl pl-8 pr-4 py-2 text-sm text-gray-300 focus:outline-none focus:border-violet-500 transition-colors appearance-none cursor-pointer"
+              >
+                {(Object.entries(SORT_LABELS) as [SortKey, string][]).map(([k, v]) => (
+                  <option key={k} value={k}>{v}</option>
+                ))}
+              </select>
             </div>
 
             {/* Filter tabs */}
