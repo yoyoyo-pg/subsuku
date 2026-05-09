@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback, useMemo } from 'react'
-import { Plus, LogOut, TrendingDown, Search, ArrowUpDown } from 'lucide-react'
+import { Plus, LogOut, TrendingDown, Search, ArrowUpDown, Download } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import StatsCards       from './StatsCards'
@@ -11,6 +11,7 @@ import SubscriptionCard from './SubscriptionCard'
 import SubscriptionModal from './SubscriptionModal'
 import type { Subscription, SubscriptionFormData } from '@/types/subscription'
 import { toMonthlyAmount } from '@/types/subscription'
+import { buildCsvContent, downloadCsv } from '@/lib/csv'
 
 type SortKey = 'created_at' | 'name' | 'amount_desc' | 'amount_asc' | 'next_billing_date'
 
@@ -95,6 +96,11 @@ export default function DashboardClient({ user, initialSubscriptions }: Props) {
     setModalOpen(true)
   }
 
+  function handleExportCsv() {
+    const date = new Date().toISOString().slice(0, 10)
+    downloadCsv(buildCsvContent(subscriptions), `subsuku_${date}.csv`)
+  }
+
   const filtered = useMemo(() => {
     const result = subscriptions.filter(s => {
       const matchSearch = !search || s.name.toLowerCase().includes(search.toLowerCase())
@@ -140,6 +146,13 @@ export default function DashboardClient({ user, initialSubscriptions }: Props) {
           </div>
           <div className="flex items-center gap-3">
             <span className="text-gray-500 text-sm hidden sm:block">{user.email}</span>
+            <button
+              onClick={handleExportCsv}
+              className="p-2 rounded-lg text-gray-500 hover:text-white hover:bg-gray-800 transition-colors"
+              title="CSVエクスポート"
+            >
+              <Download className="w-4 h-4" />
+            </button>
             <button
               onClick={handleLogout}
               className="p-2 rounded-lg text-gray-500 hover:text-white hover:bg-gray-800 transition-colors"

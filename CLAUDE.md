@@ -37,6 +37,7 @@
 | `lib/supabase/` | Supabase クライアント（client.ts / server.ts） |
 | `types/subscription.ts` | 共通型定義・定数・計算ユーティリティ |
 | `lib/waste.ts` | 無駄遣い検出ロジック（`detectWaste`） |
+| `lib/csv.ts` | CSV エクスポートロジック（`buildCsvContent` / `downloadCsv`） |
 | `tests/` | ユニットテスト（Vitest） |
 | `supabase/schema.sql` | DB スキーマ（Supabase SQL Editor で実行） |
 | `.claude/rules/` | 詳細ルール（コンテキスト自動注入） |
