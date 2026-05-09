@@ -26,8 +26,10 @@
 |-----|------|
 | `app/page.tsx` | ログインページ（未認証ユーザー向け） |
 | `app/dashboard/page.tsx` | ダッシュボード（認証済みユーザー向け） |
+| `app/trial/page.tsx` | お試しページ（認証不要・モックデータ） |
 | `app/auth/callback/route.ts` | OAuth コールバック処理 |
 | `components/DashboardClient.tsx` | メイン UI（CRUD・状態管理） |
+| `components/TrialDashboardClient.tsx` | お試しページ UI（モックデータ・読み取り専用） |
 | `components/SpendingCharts.tsx` | Recharts グラフ（'use client' 必須） |
 | `components/WasteAlert.tsx` | 無駄遣い自動検出 |
 | `lib/supabase/` | Supabase クライアント（client.ts / server.ts） |
