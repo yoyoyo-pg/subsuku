@@ -1,7 +1,3 @@
----
-paths: app/**/*.tsx,app/**/*.ts,components/**/*.tsx,lib/**/*.ts,types/**/*.ts
----
-
 # 開発ワークフロー
 
 ## ブランチ・PR
