@@ -8,7 +8,10 @@
 - **支出の可視化** — カテゴリ別円グラフ・月額ランキングバーチャート
 - **無駄遣い発見** — 高額年払い・同カテゴリ重複・¥5,000 超えを自動検出
 - **サブスク管理** — 追加・編集・削除、アイコン・カテゴリ・次回請求日を管理
+- **並び替え** — 追加順・名前順・金額順・請求日順で並び替え
+- **CSV エクスポート** — サブスク一覧を Excel 対応 CSV でダウンロード
 - **認証** — Google OAuth またはメール/パスワードでログイン（Supabase Auth）
+- **お試しページ** — ログイン不要でモックデータを確認（`/trial`）
 
 ## 技術スタック
 
@@ -34,7 +37,7 @@ npm install
 ### 2. Supabase プロジェクトの作成
 
 1. [supabase.com](https://supabase.com) でプロジェクトを作成
-2. **SQL Editor** で [`supabase/schema.sql`](./supabase/schema.sql) を実行
+2. **SQL Editor** で [`supabase/migrations/20260509000000_init.sql`](./supabase/migrations/20260509000000_init.sql) を実行
 3. **Authentication > URL Configuration** のリダイレクト先に以下を追加
    - `http://localhost:3000/auth/callback`
    - `https://<your-app>.vercel.app/auth/callback`
@@ -102,36 +105,49 @@ npm run dev        # 開発サーバー起動
 npm run build      # 本番ビルド
 npm run lint       # ESLint チェック
 npm run typecheck  # TypeScript 型チェック
+npm test           # ユニットテスト実行
+npm run test:watch # ウォッチモードでテスト実行
 ```
 
 ## Vercel へのデプロイ
 
-```bash
-npx vercel
-```
+1. [vercel.com](https://vercel.com) でリポジトリをインポート
+2. **Environment Variables** に `.env.local` と同じ変数を設定
+3. デプロイ後、Supabase の **Authentication > URL Configuration** に本番 URL のコールバックを追加
 
-Vercel Dashboard の **Environment Variables** に `.env.local` と同じ変数を設定してください。
+```
+https://<your-app>.vercel.app/auth/callback
+```
 
 ## ディレクトリ構成
 
 ```
 subsuku/
 ├── app/
-│   ├── auth/callback/     # OAuth コールバック
-│   ├── dashboard/         # ダッシュボードページ
-│   └── page.tsx           # ログインページ
+│   ├── auth/callback/         # OAuth コールバック処理
+│   ├── dashboard/             # ダッシュボードページ（要認証）
+│   ├── trial/                 # お試しページ（認証不要）
+│   └── page.tsx               # ログインページ
 ├── components/
 │   ├── DashboardClient.tsx    # メイン UI（CRUD・状態管理）
-│   ├── SpendingCharts.tsx     # グラフ
-│   ├── WasteAlert.tsx         # 無駄遣い検出
-│   ├── SubscriptionModal.tsx  # 追加・編集モーダル
-│   └── ...
-├── lib/supabase/          # Supabase クライアント
-├── types/subscription.ts  # 共通型定義
-├── supabase/schema.sql    # DB スキーマ
+│   ├── TrialDashboardClient.tsx # お試しページ UI
+│   ├── SpendingCharts.tsx     # グラフ（Recharts）
+│   ├── WasteAlert.tsx         # 無駄遣い検出 UI
+│   ├── SubscriptionCard.tsx   # サブスクカード
+│   └── SubscriptionModal.tsx  # 追加・編集モーダル
+├── lib/
+│   ├── supabase/              # Supabase クライアント（client.ts / server.ts）
+│   ├── waste.ts               # 無駄遣い検出ロジック
+│   └── csv.ts                 # CSV エクスポートロジック
+├── types/
+│   └── subscription.ts        # 共通型定義・定数・ユーティリティ
+├── tests/                     # ユニットテスト（Vitest）
+├── supabase/
+│   ├── migrations/            # DB マイグレーションファイル
+│   └── schema.sql             # DB スキーマ（参照用スナップショット）
 └── docs/
-    ├── lessons.md         # 教訓・判断記録
-    └── ideas.md           # アイデアメモ
+    ├── lessons.md             # 開発時の教訓・判断記録
+    └── ideas.md               # 機能アイデアメモ
 ```
 
 ## ライセンス

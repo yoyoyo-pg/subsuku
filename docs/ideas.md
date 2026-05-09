@@ -8,7 +8,7 @@
 
 - [ ] **更新日リマインダー** — 次回請求日の数日前にブラウザ通知（Web Push API）
 - [ ] **為替対応** — USD/EUR など外貨サブスクを JPY 換算表示（Open Exchange Rates API）
-- [ ] **CSV エクスポート** — サブスク一覧を Excel/CSV でダウンロード
+- [x] **CSV エクスポート** — サブスク一覧を Excel/CSV でダウンロード ✅
 
 ## 優先度中
 
