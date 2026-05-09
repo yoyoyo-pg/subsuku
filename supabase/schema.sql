@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS subscriptions (
   amount            NUMERIC(12, 2) NOT NULL,
   currency          TEXT        NOT NULL DEFAULT 'JPY',
   billing_cycle     TEXT        NOT NULL DEFAULT 'monthly'
-                    CHECK (billing_cycle IN ('monthly', 'yearly', 'weekly')),
+                    CHECK (billing_cycle IN ('monthly', 'yearly')),
   category          TEXT        NOT NULL DEFAULT 'other'
                     CHECK (category IN ('video', 'music', 'productivity', 'gaming', 'cloud', 'news', 'other')),
   next_billing_date DATE,

@@ -1,5 +1,5 @@
 export type Category = 'video' | 'music' | 'productivity' | 'gaming' | 'cloud' | 'news' | 'other'
-export type BillingCycle = 'monthly' | 'yearly' | 'weekly'
+export type BillingCycle = 'monthly' | 'yearly'
 
 export interface Subscription {
   id: string
@@ -43,11 +43,9 @@ export const CATEGORIES: Record<Category, { label: string; color: string; icon: 
 export const BILLING_CYCLE_LABELS: Record<BillingCycle, string> = {
   monthly: '月払い',
   yearly:  '年払い',
-  weekly:  '週払い',
 }
 
 export function toMonthlyAmount(amount: number, cycle: BillingCycle): number {
-  if (cycle === 'yearly')  return amount / 12
-  if (cycle === 'weekly')  return (amount * 52) / 12
+  if (cycle === 'yearly') return amount / 12
   return amount
 }
