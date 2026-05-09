@@ -32,7 +32,10 @@
 | `components/WasteAlert.tsx` | 無駄遣い自動検出 |
 | `lib/supabase/` | Supabase クライアント（client.ts / server.ts） |
 | `types/subscription.ts` | 共通型定義・定数・計算ユーティリティ |
-| `supabase/schema.sql` | DB スキーマ（Supabase SQL Editor で実行） |
+| `supabase/schema.sql` | DB スキーマのスナップショット（参照用・編集禁止） |
+| `supabase/migrations/` | DB マイグレーションファイル（スキーマ変更の唯一の正） |
+| `supabase/config.toml` | Supabase CLI 設定 |
+| `.github/workflows/migrate.yml` | DB マイグレーション自動適用 CI |
 | `.claude/rules/` | 詳細ルール（コンテキスト自動注入） |
 | `docs/` | 教訓・アイデアメモ |
 
@@ -46,8 +49,9 @@ npm install
 cp .env.local.example .env.local
 # .env.local に Supabase URL・anon key を記入
 
-# 3. Supabase スキーマ実行
-# Supabase Dashboard > SQL Editor で supabase/schema.sql を実行
+# 3. Supabase スキーマ適用
+# Supabase Dashboard > SQL Editor で supabase/migrations/20260509000000_init.sql を実行
+# （以降の変更は supabase/migrations/ に追加し、CI が自動適用する）
 
 # 4. Supabase Google OAuth 設定
 # Authentication > Providers > Google を有効化
@@ -56,6 +60,20 @@ cp .env.local.example .env.local
 # 5. 開発サーバー起動
 npm run dev
 ```
+
+## スキーマ変更手順
+
+1. `supabase/migrations/` に新しいファイルを追加（命名: `YYYYMMDDHHmmss_<説明>.sql`）
+2. `schema.sql` は編集しない（スナップショットとして残すのみ）
+3. main にマージすると GitHub Actions が自動で `supabase db push` を実行
+
+## GitHub Actions シークレット（DB マイグレーション用）
+
+| シークレット名 | 取得場所 |
+|--------------|---------|
+| `SUPABASE_ACCESS_TOKEN` | Supabase Dashboard > Account > Access Tokens |
+| `SUPABASE_PROJECT_REF` | Supabase Dashboard > Project Settings > General（Reference ID） |
+| `SUPABASE_DB_PASSWORD` | Supabase Dashboard > Project Settings > Database（Database password） |
 
 ## 行動原則
 

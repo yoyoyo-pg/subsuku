@@ -1,8 +1,4 @@
--- NOTE: This file is a reference snapshot only.
--- The source of truth for schema changes is supabase/migrations/.
--- To make schema changes, add a new migration file instead of editing this file.
-
--- Subsuku — subscriptions table
+-- Subsuku — initial schema
 CREATE TABLE IF NOT EXISTS subscriptions (
   id                UUID        DEFAULT gen_random_uuid() PRIMARY KEY,
   user_id           UUID        REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
@@ -22,10 +18,8 @@ CREATE TABLE IF NOT EXISTS subscriptions (
   updated_at        TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
--- Index for fast per-user queries
 CREATE INDEX IF NOT EXISTS subscriptions_user_id_idx ON subscriptions(user_id);
 
--- Auto-update updated_at
 CREATE OR REPLACE FUNCTION update_updated_at()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -34,21 +28,25 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS subscriptions_updated_at ON subscriptions;
 CREATE TRIGGER subscriptions_updated_at
   BEFORE UPDATE ON subscriptions
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 
--- Row Level Security: users can only access their own rows
 ALTER TABLE subscriptions ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "select_own" ON subscriptions;
 CREATE POLICY "select_own" ON subscriptions
   FOR SELECT USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "insert_own" ON subscriptions;
 CREATE POLICY "insert_own" ON subscriptions
   FOR INSERT WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "update_own" ON subscriptions;
 CREATE POLICY "update_own" ON subscriptions
   FOR UPDATE USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "delete_own" ON subscriptions;
 CREATE POLICY "delete_own" ON subscriptions
   FOR DELETE USING (auth.uid() = user_id);

@@ -49,6 +49,21 @@ Next.js + Tailwind CSS の構成では `autoprefixer` が必要だが、`tailwin
 
 **→ `devDependencies` に `"autoprefixer": "^10"` を必ず明示する。**
 
+## 2026-05-09 Supabase マイグレーション CI/CD 導入
+
+### schema.sql 一枚管理から Supabase CLI マイグレーション方式への移行
+
+単一の `schema.sql` を SQL Editor で手動実行する運用では、ALTER TABLE や DROP などの差分変更に対応できない。
+Supabase CLI の `supabase/migrations/` 方式に移行することで、変更履歴が git で追跡でき、`supabase db push` で差分のみ自動適用される。
+
+移行手順の要点:
+- 既存 schema.sql の内容を `migrations/YYYYMMDDHHmmss_init.sql` として切り出す
+- `DROP TRIGGER IF EXISTS` / `DROP POLICY IF EXISTS` を先行させて冪等性を確保
+- `supabase/config.toml` に `project_id` を定義（CI では `supabase link` で上書きされる）
+- GitHub Actions シークレット: `SUPABASE_ACCESS_TOKEN` / `SUPABASE_PROJECT_REF` / `SUPABASE_DB_PASSWORD`
+
+**→ スキーマ変更は必ず新規マイグレーションファイルを追加する。schema.sql は参照用スナップショットとして残すのみ。**
+
 ### DashboardClient のデータ更新戦略
 
 Server Component で初期データを fetch し、Client Component に props で渡している。
