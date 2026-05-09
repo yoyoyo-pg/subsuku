@@ -12,7 +12,7 @@ export interface Subscription {
   next_billing_date: string | null
   started_at: string | null
   is_active: boolean
-  icon: string
+  icon: string | null
   notes: string | null
   created_at: string
   updated_at: string
