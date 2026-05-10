@@ -19,6 +19,8 @@
 | `npm run build` | 本番ビルド（Vercel デプロイ前に必ず確認） |
 | `npm run lint` | ESLint チェック |
 | `npm run typecheck` | TypeScript 型チェック |
+| `npm test` | ユニットテスト実行（CI用） |
+| `npm run test:watch` | ウォッチモードでテスト実行 |
 
 ## ディレクトリ構造
 
@@ -34,6 +36,9 @@
 | `components/WasteAlert.tsx` | 無駄遣い自動検出 |
 | `lib/supabase/` | Supabase クライアント（client.ts / server.ts） |
 | `types/subscription.ts` | 共通型定義・定数・計算ユーティリティ |
+| `lib/waste.ts` | 無駄遣い検出ロジック（`detectWaste`） |
+| `lib/csv.ts` | CSV エクスポートロジック（`buildCsvContent` / `downloadCsv`） |
+| `tests/` | ユニットテスト（Vitest） |
 | `supabase/schema.sql` | DB スキーマ（Supabase SQL Editor で実行） |
 | `.claude/rules/` | 詳細ルール（コンテキスト自動注入） |
 | `docs/` | 教訓・アイデアメモ |
