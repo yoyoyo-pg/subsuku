@@ -8,6 +8,7 @@
 - **支出の可視化** — カテゴリ別円グラフ・月額ランキングバーチャート
 - **無駄遣い発見** — 高額年払い・同カテゴリ重複・¥5,000 超えを自動検出
 - **サブスク管理** — 追加・編集・削除、アイコン・カテゴリ・次回請求日を管理
+- **お試しモード** — アカウント登録なしでデモを体験（`/trial`）
 - **認証** — Google OAuth またはメール/パスワードでログイン（Supabase Auth）
 
 ## 技術スタック
@@ -119,12 +120,14 @@ subsuku/
 ├── app/
 │   ├── auth/callback/     # OAuth コールバック
 │   ├── dashboard/         # ダッシュボードページ
+│   ├── trial/             # お試しページ（認証不要）
 │   └── page.tsx           # ログインページ
 ├── components/
-│   ├── DashboardClient.tsx    # メイン UI（CRUD・状態管理）
-│   ├── SpendingCharts.tsx     # グラフ
-│   ├── WasteAlert.tsx         # 無駄遣い検出
-│   ├── SubscriptionModal.tsx  # 追加・編集モーダル
+│   ├── DashboardClient.tsx       # メイン UI（CRUD・状態管理）
+│   ├── TrialDashboardClient.tsx  # お試しページ UI
+│   ├── SpendingCharts.tsx        # グラフ
+│   ├── WasteAlert.tsx            # 無駄遣い検出
+│   ├── SubscriptionModal.tsx     # 追加・編集モーダル
 │   └── ...
 ├── lib/supabase/          # Supabase クライアント
 ├── types/subscription.ts  # 共通型定義
