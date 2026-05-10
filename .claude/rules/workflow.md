@@ -7,9 +7,24 @@
 - PR を作成すると GitHub Actions が自動で型チェック・lint を実行する
 - 既存ブランチで作業を続ける前に PR の状態を確認する（マージ済みなら新ブランチを切る）
 
+## コンフリクト防止ルール
+
+ブランチが長生きすると main との乖離が大きくなりコンフリクトが起きやすい。以下を必ず守る。
+
+1. **PR 作成直前に必ず rebase する**
+   ```bash
+   git fetch origin main
+   git rebase origin/main
+   git push --force-with-lease
+   ```
+2. **1ブランチ = 1タスク**。複数機能を同じブランチに詰め込まない。
+3. **ブランチ寿命は原則 1 セッション以内**。跨ぐ場合は冒頭で `git fetch origin main && git log --oneline origin/main..HEAD` でズレを確認する。
+4. **docs 系ファイル（README・ideas.md・lessons.md）は特に競合しやすい**。実装ブランチでは必要最小限の docs 更新に留め、main への追従を早める。
+
 ## PR作成前チェックリスト
 
 ```
+[ ] git fetch origin main && git rebase origin/main 済み（コンフリクト防止）
 [ ] npm run typecheck がエラーなし
 [ ] npm run lint がエラーなし
 [ ] npm run build が成功する（Vercel デプロイ前に必ず確認）
