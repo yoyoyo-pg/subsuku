@@ -41,6 +41,7 @@
 | `tests/` | ユニットテスト（Vitest） |
 | `supabase/schema.sql` | DB スキーマ（Supabase SQL Editor で実行） |
 | `.claude/rules/` | 詳細ルール（コンテキスト自動注入） |
+| `.claude/commands/secret-check.md` | `/secret-check` スラッシュコマンド（シークレット露出チェッカー） |
 | `docs/` | 教訓・アイデアメモ |
 
 ## セットアップ
