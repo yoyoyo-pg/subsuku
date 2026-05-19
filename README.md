@@ -37,7 +37,7 @@ npm install
 ### 2. Supabase プロジェクトの作成
 
 1. [supabase.com](https://supabase.com) でプロジェクトを作成
-2. **SQL Editor** で [`supabase/migrations/20260509000000_init.sql`](./supabase/migrations/20260509000000_init.sql) を実行
+2. **SQL Editor** で [`supabase/schema.sql`](./supabase/schema.sql) を実行
 3. **Authentication > URL Configuration** のリダイレクト先に以下を追加
    - `http://localhost:3000/auth/callback`
    - `https://<your-app>.vercel.app/auth/callback`

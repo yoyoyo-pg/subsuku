@@ -30,10 +30,14 @@
 | `app/dashboard/page.tsx` | ダッシュボード（認証済みユーザー向け） |
 | `app/trial/page.tsx` | お試しページ（認証不要・モックデータ） |
 | `app/auth/callback/route.ts` | OAuth コールバック処理 |
+| `components/LoginPage.tsx` | Google OAuth + メール/パスワード認証フォーム |
 | `components/DashboardClient.tsx` | メイン UI（CRUD・状態管理） |
 | `components/TrialDashboardClient.tsx` | お試しページ UI（モックデータ・読み取り専用） |
+| `components/StatsCards.tsx` | 月額合計・年額・更新件数の統計カード |
 | `components/SpendingCharts.tsx` | Recharts グラフ（'use client' 必須） |
 | `components/WasteAlert.tsx` | 無駄遣い自動検出 |
+| `components/SubscriptionCard.tsx` | サブスクカード（ホバーで編集・削除ボタン表示） |
+| `components/SubscriptionModal.tsx` | サブスク追加・編集モーダル |
 | `lib/supabase/` | Supabase クライアント（client.ts / server.ts） |
 | `types/subscription.ts` | 共通型定義・定数・計算ユーティリティ |
 | `lib/waste.ts` | 無駄遣い検出ロジック（`detectWaste`） |
@@ -42,6 +46,8 @@
 | `supabase/schema.sql` | DB スキーマ（Supabase SQL Editor で実行） |
 | `.claude/rules/` | 詳細ルール（コンテキスト自動注入） |
 | `.claude/commands/secret-check.md` | `/secret-check` スラッシュコマンド（シークレット露出チェッカー） |
+| `.claude/commands/pr-prep.md` | `/pr-prep` スラッシュコマンド（PR作成前チェックリスト） |
+| `.claude/commands/add-lesson.md` | `/add-lesson` スラッシュコマンド（lessons.md への教訓追記） |
 | `docs/` | 教訓・アイデアメモ |
 
 ## セットアップ
