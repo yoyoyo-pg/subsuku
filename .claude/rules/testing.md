@@ -6,22 +6,28 @@ paths: app/**/*.tsx,app/**/*.ts,components/**/*.tsx
 
 ## 現状
 
-テストは未設定。型チェック（`npm run typecheck`）と lint（`npm run lint`）が品質ゲートとして機能している。
+Vitest によるユニットテストが `tests/` に導入済み。
 
-PostToolUse フックが .ts/.tsx 編集後に `tsc --noEmit` を自動実行するため、型エラーは即時フィードバックされる。
+| ファイル | テスト対象 |
+|---------|-----------|
+| `tests/subscription.test.ts` | `toMonthlyAmount` などの計算ロジック |
+| `tests/wasteAlert.test.ts` | `detectWaste` の検出ロジック |
+| `tests/csv.test.ts` | `buildCsvContent` の CSV 生成ロジック |
+
+型チェック（`npm run typecheck`）・lint（`npm run lint`）・テスト（`npm test`）が品質ゲートとして機能している。
+PostToolUse フックが .ts/.tsx 編集後に `tsc --noEmit` と ESLint を自動実行する。
 
 ## テストを追加するタイミング
 
-以下の機能を追加するときはテストも同時に書く:
+純粋計算ロジックを追加・変更するときはテストも同時に書く。具体的には:
 
-- `toMonthlyAmount` などの純粋計算ロジック（`types/subscription.ts`）
-- WasteAlert の検出ロジック（`components/WasteAlert.tsx`）
-- Supabase の RLS ポリシーの正しさ（統合テスト）
+- `types/subscription.ts` の計算ユーティリティ
+- `lib/waste.ts` の検出ロジック
+- `lib/csv.ts` の CSV 生成ロジック
 
-## 推奨スタック（導入時）
+## 今後の拡張候補
 
-- **Unit**: Vitest（Next.js との相性が良い）
-- **Component**: React Testing Library
+- **Component**: React Testing Library（UI コンポーネントの振る舞い検証）
 - **E2E**: Playwright（Vercel Preview URLs に対しても実行可能）
 
 ## 追加時の注意
