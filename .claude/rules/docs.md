@@ -1,17 +1,17 @@
 ---
-paths: docs/**/*.md,CLAUDE.md
+paths: tasks/**/*.md,CLAUDE.md
 ---
 
 # ドキュメント管理
 
 ## 改善サイクル
 
-1. **作業開始前**: `docs/lessons.md` を読み、関連する過去の教訓・ミス記録を確認する（session-init.sh が自動注入）
-2. **実装完了後（PR作成前）**: `docs/lessons.md` に教訓を追記し、PR に含める（`/add-lesson` を使う）
+1. **作業開始前**: `tasks/lessons.md` を読み、関連する過去の教訓・ミス記録を確認する（session-init.sh が自動注入）
+2. **実装完了後（PR作成前）**: `tasks/lessons.md` に教訓を追記し、PR に含める（`/add-lesson` を使う）
 
 ## lessons.md の書き方
 
-記録は **判断記録** と **ミス記録** の2種類。フォーマットは `docs/lessons.md` の冒頭を参照。
+記録は **判断記録** と **ミス記録** の2種類。フォーマットは `tasks/lessons.md` の冒頭を参照。
 
 共通ルール:
 - **何をしたか** ではなく **なぜそうしたか・次回どうすべきか** を書く
@@ -20,7 +20,7 @@ paths: docs/**/*.md,CLAUDE.md
 
 ### ミス記録の必須ルール
 
-- **ユーザーから指摘・修正を受けたら、その場で必ず** `docs/lessons.md` に追記する
+- **ユーザーから指摘・修正を受けたら、その場で必ず** `tasks/lessons.md` に追記する
 - 「ミスのパターン」と「再発防止ルール」をセットで書く
 - 再発防止ルールは **自分が次回どう動けば防げるか** を具体的に書く（抽象的な反省文にしない）
 - 記録しない選択肢はない
@@ -29,7 +29,7 @@ paths: docs/**/*.md,CLAUDE.md
 
 | ファイル | 用途 |
 |---------|------|
-| `docs/lessons.md` | ハマりどころ・判断理由・次への教訓（蓄積型） |
-| `docs/ideas.md` | 開発アイデアメモ |
+| `tasks/lessons.md` | ハマりどころ・判断理由・次への教訓（蓄積型） |
+| `tasks/ideas.md` | 開発アイデアメモ |
 | `CLAUDE.md` | Claude Code 向けプロジェクトガイドライン |
 | `supabase/schema.sql` | DB スキーマ（唯一の正として管理） |
