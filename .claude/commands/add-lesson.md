@@ -1,8 +1,8 @@
 ---
-description: docs/lessons.md に教訓またはミス記録を追記する
+description: tasks/lessons.md に教訓またはミス記録を追記する
 ---
 
-`docs/lessons.md` に教訓を追記します。記録の種類を判断してから書いてください。
+`tasks/lessons.md` に教訓を追記します。記録の種類を判断してから書いてください。
 
 ## 記録の種類を判断する
 
@@ -44,11 +44,11 @@ description: docs/lessons.md に教訓またはミス記録を追記する
 
 - コードや git log で分かることは書かない
 - 「何をしたか」ではなく「なぜ・次回どうすべきか」になっているか
-- 同じ内容がすでに書かれていないか（`docs/lessons.md` を読んで確認）
+- 同じ内容がすでに書かれていないか（`tasks/lessons.md` を読んで確認）
 
 ## 手順
 
-1. `docs/lessons.md` を読んで既存の内容を確認する
+1. `tasks/lessons.md` を読んで既存の内容を確認する
 2. 種類（判断 or ミス）を選ぶ
 3. フォーマットに沿って追記する
 4. コミットに含める

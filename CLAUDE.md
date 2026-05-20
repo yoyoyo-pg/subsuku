@@ -48,7 +48,7 @@
 | `.claude/commands/secret-check.md` | `/secret-check` スラッシュコマンド（シークレット露出チェッカー） |
 | `.claude/commands/pr-prep.md` | `/pr-prep` スラッシュコマンド（PR作成前チェックリスト） |
 | `.claude/commands/add-lesson.md` | `/add-lesson` スラッシュコマンド（lessons.md への教訓追記） |
-| `docs/` | 教訓・アイデアメモ |
+| `tasks/` | 教訓・アイデアメモ |
 
 ## セットアップ
 
